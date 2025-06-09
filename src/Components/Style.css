@@ -1,0 +1,50 @@
+.container 
+{
+    padding: 20px;
+    shadow: 3px 3px 4px 4px rgb(192, 186, 186);
+}
+.card 
+{
+    marginTop : 20px;
+    width: 100%;
+}
+
+.text 
+ {
+    text-align : center;
+    font-weight : bold;
+    font-size : 40px;
+    color: black;
+ }
+    
+.buttonContainer 
+ {
+    margin : 10px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+ }
+ .taskContainer 
+ {
+    background-color : blue ;
+    display : flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 10px;
+ }
+ 
+ .icon {
+    font-size: 20px;
+    border: 1px solid white;
+    padding: 10px;
+    color: white;
+    border-radius: 30px;
+ }
+ @media(max-width: 768px)
+ {
+   .taskContainer {
+      flex-direction: column;
+      align-items:start;
+   }
+ }
