@@ -15,6 +15,12 @@ export const TasksData = [
     }
     ,
     {
-      idTask : 4
+      idTask : 4 ,
+      addressTask : "في الجافاسكريبت axios دراسة مكتبة"
+    }
+    ,
+    {
+      idTask : 5 ,
+      addressTask : "الانتهاء من كورس جافاسكريبت"
     }
 ]

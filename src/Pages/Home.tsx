@@ -36,7 +36,7 @@ export const Home : React.FC = () =>
 
     return(
         <>
-        <Container maxWidth="md" style={{backgroundColor:'gray' }} className='container'>
+        <Container maxWidth="md" className='container'>
             <Card className='card'>
                 <CardContent>
                      <Typography className='text' style={{textAlign: 'center' , fontSize: '40px' , fontWeight:'bold' , color:'black'}}>مهامي</Typography>
