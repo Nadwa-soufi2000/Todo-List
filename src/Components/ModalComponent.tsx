@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup'
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,6 +13,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
+import '../Components/Style.css'
+
 
 type ModalProps = {
     open : boolean ,
@@ -30,23 +33,11 @@ export default function ModalComponent(props : ModalProps)
 
   return (
     <Dialog onClose={handleClose} open={props.open}>
-      <DialogTitle>هل انت متأكد من حذف هذه المهمة ؟</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        <ListItem disablePadding>
-          <ListItemButton
-            autoFocus
-            //onClick={() => handleListItemClick('addAccount')}
-          >
-           حذف 
-          </ListItemButton>
-          <ListItemButton
-            autoFocus
-            //onClick={() => handleListItemClick('addAccount')}
-          >
-            تراجع
-          </ListItemButton>
-        </ListItem>
-      </List>
+      <DialogTitle style={{fontSize:'17px', textAlign:'center', fontWeight:'bold'}}>هل انت متأكد من حذف هذه المهمة ؟</DialogTitle>
+        <ButtonGroup className='buttonContainer'>
+            <Button variant="outlined" style={{color:'red',border:'1px solid gray',borderRadius:'5px'}}>حذف</Button>
+            <Button variant="outlined" style={{color:'green',border:'1px solid gray',borderRadius:'5px'}}>تراجع</Button>
+        </ButtonGroup>
     </Dialog>
   );
 }

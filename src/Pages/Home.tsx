@@ -10,23 +10,32 @@ import { Stack } from '@mui/material'
 import '../Components/Style.css'
 import { TasksData } from '../Components/TasksData'
 import Tasks from '../Components/Tasks'
+import { useState } from 'react'
 
 type tasks = {
     idTask : number ,
     addressTask : string
 }
 
-export const Home : React.FC = () =>
+export default function Home() 
 {
+    const[newTask , setNewTask] = useState<tasks>({} as tasks)
      const handleChange = () =>
        {
         
+       }
+
+       const handleNewTask = (e) => 
+       {
+           e.PreventDefault();
+           setNewTask(e.target.value)
        }
        const ArrayOfTasks : tasks[] = TasksData;
 
       const showTasks  = ArrayOfTasks.map((item: tasks) => {
           return( <Tasks 
              addressTask={item.addressTask}
+             idTask={item.idTask}
            />)
        })
 
@@ -51,7 +60,7 @@ export const Home : React.FC = () =>
                 </CardContent>
                 <CardActions>
                    <Button>إضافة</Button>
-          <TextField id="outlined-basic" label=" عنوان المهمة" variant="outlined" />
+                   <TextField id="outlined-basic" onChange={handleNewTask} value={newTask} label=" عنوان المهمة" variant="outlined" />
                 </CardActions>
             </Card>
         </Container>

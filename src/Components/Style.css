@@ -26,6 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap:10px;
     
  }
  .taskContainer 
@@ -61,12 +62,20 @@
  #check{
    color: green;
    background-color:white;
-    border: 1px solid green;
+   border: 1px solid green;
  }
+ 
+
  @media(max-width: 768px)
  {
    .taskContainer {
       flex-direction: column;
       align-items:start;
    }
+ }
+
+ .btnn
+ {
+   color:red;
+   background-color: #ddd;
  }

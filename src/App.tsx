@@ -1,7 +1,7 @@
 
-import {Home} from './Pages/Home'
+import Home from './Pages/Home'
 
-function App() {
+ export default function App () {
 
  
 
@@ -13,4 +13,3 @@ function App() {
   )
 }
 
-export default App
