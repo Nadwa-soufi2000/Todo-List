@@ -19,18 +19,36 @@ type tasks = {
 
 export default function Home() 
 {
-    const[newTask , setNewTask] = useState<tasks>({} as tasks)
+     const[newTask , setNewTask] = useState<boolean>(false)
+
+     if(localStorage.getItem('allTasks'))
+     {
+        TasksData.push(JSON.parse( localStorage.getItem('allTasks') || '[]'))
+     }
      const handleChange = () =>
        {
         
        }
 
-       const handleNewTask = (e) => 
+     const handleNewTask = (e : React.ChangeEvent<HTMLInputElement>) => 
        {
-           e.PreventDefault();
-           setNewTask(e.target.value)
+          const obj = 
+          {
+            idTask : TasksData.length ,
+            addressTask : e.target.value
+          }
+           TasksData.push(obj)
+           localStorage.setItem('allTasks' , JSON.stringify(TasksData))
        }
-       const ArrayOfTasks : tasks[] = TasksData;
+     
+     const handleSubmit = () =>
+        {
+            setNewTask(true)
+        }  
+
+
+     console.log(newTask)
+     const ArrayOfTasks : tasks[] = TasksData;
 
       const showTasks  = ArrayOfTasks.map((item: tasks) => {
           return( <Tasks 
@@ -59,8 +77,8 @@ export default function Home()
                      </Stack>
                 </CardContent>
                 <CardActions>
-                   <Button>إضافة</Button>
-                   <TextField id="outlined-basic" onChange={handleNewTask} value={newTask} label=" عنوان المهمة" variant="outlined" />
+                    <Button onSubmit={handleSubmit}>إضافة</Button>
+                    <TextField id="outlined-basic" onChange={handleNewTask} label=" عنوان المهمة" variant="outlined" />
                 </CardActions>
             </Card>
         </Container>
