@@ -19,11 +19,14 @@ type tasks = {
 
 export default function Home() 
 {
-     const[newTask , setNewTask] = useState<boolean>(false)
-
+     const[newTask , setNewTask] = useState<tasks>({} as tasks)
+     const[taskAdded , setTaskAdded] = useState<boolean>(false)
+     let newTasksData : tasks[] = TasksData;
+     //localStorage.removeItem('allTasks')
      if(localStorage.getItem('allTasks'))
      {
-        TasksData.push(JSON.parse( localStorage.getItem('allTasks') || '[]'))
+        newTasksData = [];
+        newTasksData =  JSON.parse( localStorage.getItem('allTasks') || '[]');
      }
      const handleChange = () =>
        {
@@ -32,24 +35,27 @@ export default function Home()
 
      const handleNewTask = (e : React.ChangeEvent<HTMLInputElement>) => 
        {
+          e.preventDefault()
           const obj = 
           {
             idTask : TasksData.length ,
             addressTask : e.target.value
           }
-           TasksData.push(obj)
-           localStorage.setItem('allTasks' , JSON.stringify(TasksData))
+           setNewTask(obj)
        }
      
      const handleSubmit = () =>
         {
-            setNewTask(true)
+           newTasksData.push(newTask)
+           localStorage.setItem('allTasks' , JSON.stringify(newTasksData))
+           setTaskAdded(prev => !prev)
         }  
+     console.log(newTasksData)  
+     console.log(JSON.parse(localStorage.getItem('allTasks') || '[]'))
 
 
-     console.log(newTask)
-     const ArrayOfTasks : tasks[] = TasksData;
 
+      const ArrayOfTasks : tasks[] = newTasksData ;  
       const showTasks  = ArrayOfTasks.map((item: tasks) => {
           return( <Tasks 
              addressTask={item.addressTask}
@@ -68,16 +74,16 @@ export default function Home()
                 <CardContent>
                      <Typography className='text' style={{textAlign: 'center' , fontSize: '40px' , fontWeight:'bold' , color:'black'}}>مهامي</Typography>
                      <ButtonGroup className='buttonContainer' style={{direction: 'rtl',display:'flex',justifyContent:'center',alignItems:'center'}} value='' onChange={handleChange}>
-                        <Button variant="outlined">الكل</Button>
-                        <Button variant="outlined">منجز</Button>
-                        <Button variant="outlined">غير منجز</Button>
+                        <Button style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">الكل</Button>
+                        <Button style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">منجز</Button>
+                        <Button style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">غير منجز</Button>
                      </ButtonGroup>
-                     <Stack direction='column' style={{display:'flex',flexDirection:'column',gap:'30px'}}>
+                     <Stack direction='column' style={{display:'flex',flexDirection:'column',gap:'30px' , marginTop:'30px'}}>
                           {showTasks}
                      </Stack>
                 </CardContent>
                 <CardActions>
-                    <Button onSubmit={handleSubmit}>إضافة</Button>
+                    <Button onClick={handleSubmit}>إضافة</Button>
                     <TextField id="outlined-basic" onChange={handleNewTask} label=" عنوان المهمة" variant="outlined" />
                 </CardActions>
             </Card>
