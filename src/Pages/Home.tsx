@@ -1,5 +1,5 @@
 import Button  from '@mui/material/Button'
-import ButtonGroup from '@mui/material/ButtonGroup'
+//import ButtonGroup from '@mui/material/ButtonGroup'
 import Card from '@mui/material/Card'
 import CardContent  from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
@@ -22,6 +22,8 @@ export default function Home()
      const[newTask , setNewTask] = useState<tasks>({} as tasks)
      const[taskAdded , setTaskAdded] = useState<boolean>(false)
      let newTasksData : tasks[] = TasksData;
+
+     console.log(taskAdded)
      //localStorage.removeItem('allTasks')
      if(localStorage.getItem('allTasks'))
      {
@@ -73,11 +75,11 @@ export default function Home()
             <Card className='card'>
                 <CardContent>
                      <Typography className='text' style={{textAlign: 'center' , fontSize: '40px' , fontWeight:'bold' , color:'black'}}>مهامي</Typography>
-                     <ButtonGroup className='buttonContainer' style={{direction: 'rtl',display:'flex',justifyContent:'center',alignItems:'center'}} value='' onChange={handleChange}>
+                     <div className='buttonContainer' style={{direction: 'rtl',display:'flex',justifyContent:'center',alignItems:'center'}}  onChange={handleChange}>
                         <Button style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">الكل</Button>
                         <Button style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">منجز</Button>
                         <Button style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">غير منجز</Button>
-                     </ButtonGroup>
+                     </div>
                      <Stack direction='column' style={{display:'flex',flexDirection:'column',gap:'30px' , marginTop:'30px'}}>
                           {showTasks}
                      </Stack>
