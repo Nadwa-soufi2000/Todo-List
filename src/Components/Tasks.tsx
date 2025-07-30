@@ -8,12 +8,14 @@ import { Stack } from '@mui/material'
 import '../Components/Style.css'
 import ModalComponent from './ModalComponent';
 import { useState } from 'react';
-import {TasksData} from './TasksData'
+
 
 
  type TaskData = {
     idTask : number,
-    addressTask : string
+    addressTask : string,
+    isCompleted: boolean
+    handleChangeTodo: (id : number) => void
  }
  
 
@@ -21,40 +23,16 @@ import {TasksData} from './TasksData'
 export default function Tasks(props : TaskData) 
 {
     const[open , setOpen] = useState<boolean>(false)
-    const arrCompletedTasks : TaskData[]  = [];
-
-    //localStorage.clear();
-    if(localStorage.getItem('task'))
-    {
-      arrCompletedTasks.push(JSON.parse(localStorage.getItem('task') || '[]'))
-      console.log(arrCompletedTasks)
-    }
    
-  
     const handleModal = () => 
     {
         setOpen(true)
     }
-    const handleChange = (idTask : string) => 
+    const handleChange = (id : number) => 
       {
-         
-          localStorage.setItem('changed' , idTask )
-
-          TasksData.forEach(element => 
-            {
-                
-             if(props.addressTask === element.addressTask)
-                {
-                  arrCompletedTasks.push(element)
-                  localStorage.setItem('task' , JSON.stringify(arrCompletedTasks))
-                }
-            });
-          
-          console.log(TasksData)
-          const re : TaskData[] = localStorage.getItem('task') ? JSON.parse(localStorage.getItem('task') || '[]') : []
-          console.log(re)
-          console.log(arrCompletedTasks)
+         props.handleChangeTodo(id)
       }
+
     return(
         <>
         {
@@ -72,8 +50,8 @@ export default function Tasks(props : TaskData)
               <IconButton id={`delete${props.idTask}`} onClick={handleModal}>
                   <DeleteIcon id='delete' className='icon'/>
               </IconButton> 
-              <IconButton id={`check${props.idTask}`} onClick={() => handleChange(`${props.idTask}`)}>
-                  <CheckIcon id='check' className='icon' style={{ color: localStorage.getItem('changed') === `${props.idTask}` ? 'white' : 'green' , backgroundColor: localStorage.getItem('changed') === `${props.idTask}` ? 'green' : 'white' }}/>
+              <IconButton id={`check${props.idTask}`} onClick={() => handleChange(props.idTask)}>
+                  <CheckIcon  className='icon' style={{ color: props.isCompleted ?  'white' : 'green' , backgroundColor: props.isCompleted ? 'green' : 'white'}}/>
               </IconButton>
               <div id='t'></div>
             </Stack>
