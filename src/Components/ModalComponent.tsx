@@ -26,7 +26,7 @@ export default function ModalComponent(props : ModalProps)
       <DialogTitle style={{fontSize:'17px', textAlign:'center', fontWeight:'bold'}}>هل انت متأكد من حذف هذه المهمة ؟</DialogTitle>
         <ButtonGroup className='buttonContainer'>
             <Button variant="outlined" style={{color:'red',border:'1px solid gray',borderRadius:'5px'}}>حذف</Button>
-            <Button variant="outlined" style={{color:'green',border:'1px solid gray',borderRadius:'5px'}}>تراجع</Button>
+            <Button variant="outlined" onClick={handleClose} style={{color:'green',border:'1px solid gray',borderRadius:'5px'}}>تراجع</Button>
         </ButtonGroup>
     </Dialog>
   );

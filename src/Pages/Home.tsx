@@ -8,11 +8,12 @@ import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import { Stack } from '@mui/material'
 import '../Components/Style.css'
-import { TasksData } from '../Components/TasksData'
+//import { TasksData } from '../Components/TasksData'
 import Tasks from '../Components/Tasks'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { Completed } from '../Components/Todos'
 
-type tasks = {
+type tasksType = {
     idTask : number ,
     addressTask : string,
     isCompleted: boolean
@@ -20,16 +21,18 @@ type tasks = {
 
 export default function Home() 
 {
-     const[newTask , setNewTask] = useState<tasks>({} as tasks)
-     const[todos , setTodos] = useState<tasks[]>(TasksData)
+     const[newTask , setNewTask] = useState<tasksType>({} as tasksType)
+     //const[todos , setTodos] = useState<tasksType[]>(TasksData)
 
-     const handleChangeTodos = (id : number) =>
-     {
-      const todo: tasks[] = todos.filter((item) => item.idTask === id )
-      todo[0].isCompleted = !todo[0].isCompleted
-      console.log(todo)
-      console.log(id)
-     }
+     const{ tasks , setTask} = useContext(Completed)
+
+     
+     //const handleChangeTodos = (id : number) =>
+     //{
+     // const todo: tasksType[] = tasks.filter((item) => item.idTask === id )
+     // todo[0].isCompleted = !todo[0].isCompleted
+     // return todo[0];
+    // }
      const handleChange = () =>
        {
         
@@ -40,7 +43,7 @@ export default function Home()
           e.preventDefault()
           const obj = 
           {
-            idTask : TasksData.length + 1 ,
+            idTask : tasks.length + 1 ,
             addressTask : e.target.value,
             isCompleted: false
           }
@@ -49,17 +52,16 @@ export default function Home()
      
      const handleSubmit = () =>
         {
-           setTodos([...todos , newTask])
+           setTask([...tasks , newTask])
         }  
     
 
 
-      const showAllTasks  = todos.map((item: tasks) => {
+      const showAllTasks  = tasks.map((item: tasksType) => {
           return( <Tasks 
              addressTask={item.addressTask}
              idTask={item.idTask}
              isCompleted={item.isCompleted}
-             handleChangeTodo = {handleChangeTodos}
            />)
        })
 

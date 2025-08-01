@@ -7,32 +7,47 @@ import IconButton from '@mui/material/IconButton'
 import { Stack } from '@mui/material'
 import '../Components/Style.css'
 import ModalComponent from './ModalComponent';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { Completed } from './Todos';
 
 
-
- type TaskData = {
+ type taskType = {
     idTask : number,
     addressTask : string,
     isCompleted: boolean
-    handleChangeTodo: (id : number) => void
+    //handleChangeTodo: (id : number) => tasks
  }
  
 
 
-export default function Tasks(props : TaskData) 
+export default function Tasks(props : taskType) 
 {
     const[open , setOpen] = useState<boolean>(false)
-   
+    const[edit , setEdit] = useState<taskType>({} as taskType)
+
+     const{ tasks } = useContext(Completed)
+     console.log(tasks)
+    
+
     const handleModal = () => 
     {
         setOpen(true)
     }
     const handleChange = (id : number) => 
       {
-         props.handleChangeTodo(id)
+       // const res = props.handleChangeTodo(id)
+        // setEdit(res)
+        tasks.forEach(element => {
+             if(element.idTask === id)
+             {
+                element.isCompleted = !element.isCompleted;
+             }
+        });
+        setEdit(tasks[id - 1])
       }
 
+      console.log(edit)
+  
     return(
         <>
         {
@@ -51,7 +66,7 @@ export default function Tasks(props : TaskData)
                   <DeleteIcon id='delete' className='icon'/>
               </IconButton> 
               <IconButton id={`check${props.idTask}`} onClick={() => handleChange(props.idTask)}>
-                  <CheckIcon  className='icon' style={{ color: props.isCompleted ?  'white' : 'green' , backgroundColor: props.isCompleted ? 'green' : 'white'}}/>
+                  <CheckIcon  className='icon' style={{ color: edit.isCompleted ?  'white' : 'green' , backgroundColor: edit.isCompleted ? 'green' : 'white'}}/>
               </IconButton>
               <div id='t'></div>
             </Stack>
