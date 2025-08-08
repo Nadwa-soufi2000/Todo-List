@@ -10,7 +10,7 @@ import { Stack } from '@mui/material'
 import '../Components/Style.css'
 //import { TasksData } from '../Components/TasksData'
 import Tasks from '../Components/Tasks'
-import { useContext, useState } from 'react'
+import { useContext , useRef, useState } from 'react'
 import { Completed } from '../Components/Todos'
 
 type tasksType = {
@@ -22,17 +22,18 @@ type tasksType = {
 export default function Home() 
 {
      const[newTask , setNewTask] = useState<tasksType>({} as tasksType)
-     //const[todos , setTodos] = useState<tasksType[]>(TasksData)
+     const{ tasks , setTask } = useContext(Completed)
 
-     const{ tasks , setTask} = useContext(Completed)
+     const show = useRef<string>('')
+      
+     localStorage.setItem('deleted' , '!done')
+     let arrTodos: tasksType[] = tasks;
 
-     
-     //const handleChangeTodos = (id : number) =>
-     //{
-     // const todo: tasksType[] = tasks.filter((item) => item.idTask === id )
-     // todo[0].isCompleted = !todo[0].isCompleted
-     // return todo[0];
-    // }
+     if(localStorage.getItem('todos'))
+     {
+        arrTodos = JSON.parse(localStorage.getItem('todos') || '[]')
+     }
+      
      const handleChange = () =>
        {
         
@@ -52,20 +53,37 @@ export default function Home()
      
      const handleSubmit = () =>
         {
-           setTask([...tasks , newTask])
+          arrTodos.push(newTask)
+          localStorage.setItem('todos' , JSON.stringify(arrTodos))
+          setTask([...tasks , newTask])   
         }  
-    
 
 
-      const showAllTasks  = tasks.map((item: tasksType) => {
+     const handleAllTasks = () =>
+        {
+           show.current = 'All'
+        } 
+
+
+     const handleCompletedTasks = () =>
+     {
+       show.current = 'Completed'
+     }
+
+     const handleUnCompletedTasks = () =>
+     {
+      show.current = 'UnCompleted'
+     }
+
+      const showAllTasks  = arrTodos.map((item: tasksType) => {
           return( <Tasks 
              addressTask={item.addressTask}
              idTask={item.idTask}
              isCompleted={item.isCompleted}
            />)
        })
-
-
+     //const showCompletedTasks = arrTodos.filter(item => item.isCompleted === true)
+     //const showUnCompletedTasks = arrTodos.filter(item => item.isCompleted === false)
 
     return(
         <>
@@ -74,12 +92,14 @@ export default function Home()
                 <CardContent>
                      <Typography className='text' style={{textAlign: 'center' , fontSize: '40px' , fontWeight:'bold' , color:'black'}}>مهامي</Typography>
                      <div className='buttonContainer' style={{direction: 'rtl',display:'flex',justifyContent:'center',alignItems:'center'}}  onChange={handleChange}>
-                        <Button  style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">الكل</Button>
-                        <Button  style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">منجز</Button>
-                        <Button style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">غير منجز</Button>
+                        <Button onClick={handleAllTasks} style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">الكل</Button>
+                        <Button onClick={handleCompletedTasks} style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">منجز</Button>
+                        <Button onClick={handleUnCompletedTasks} style={{border: '0.5px solid gray' , fontSize:'17px' , fontWeight:'bold' , borderRadius:'12px'}} variant="outlined">غير منجز</Button>
                      </div>
                      <Stack direction='column' style={{display:'flex',flexDirection:'column',gap:'30px' , marginTop:'30px'}}>
-                          {showAllTasks}
+                          {
+                            showAllTasks
+                          }
                      </Stack>
                 </CardContent>
                 <CardActions>
