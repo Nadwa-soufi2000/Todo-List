@@ -8,9 +8,8 @@ import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import { Stack } from '@mui/material'
 import '../Components/Style.css'
-//import { TasksData } from '../Components/TasksData'
 import Tasks from '../Components/Tasks'
-import { useContext , useRef, useState } from 'react'
+import { useContext , useState } from 'react'
 import { Completed } from '../Components/Todos'
 
 type tasksType = {
@@ -24,7 +23,7 @@ export default function Home()
      const[newTask , setNewTask] = useState<tasksType>({} as tasksType)
      const{ tasks , setTask } = useContext(Completed)
 
-     const show = useRef<string>('')
+     //const [show , setShow] = useState<string>('')
       
      localStorage.setItem('deleted' , '!done')
      let arrTodos: tasksType[] = tasks;
@@ -61,21 +60,21 @@ export default function Home()
 
      const handleAllTasks = () =>
         {
-           show.current = 'All'
+          // setShow('All')
         } 
 
 
      const handleCompletedTasks = () =>
      {
-       show.current = 'Completed'
+       //setShow('Completed')
      }
 
      const handleUnCompletedTasks = () =>
      {
-      show.current = 'UnCompleted'
+      // setShow('UnCompleted')
      }
 
-      const showAllTasks  = arrTodos.map((item: tasksType) => {
+      const showAllTasks = arrTodos.map((item: tasksType) => {
           return( <Tasks 
              addressTask={item.addressTask}
              idTask={item.idTask}
@@ -98,7 +97,16 @@ export default function Home()
                      </div>
                      <Stack direction='column' style={{display:'flex',flexDirection:'column',gap:'30px' , marginTop:'30px'}}>
                           {
-                            showAllTasks
+                            // show === 'All' ?
+                             showAllTasks 
+                             //:
+                             //show === 'Completed' ?
+                            // showCompletedTasks
+                            // :
+                            // show === 'UnCompleted' ?
+                            // showUnCompletedTasks
+                            // :
+                            // ''
                           }
                      </Stack>
                 </CardContent>

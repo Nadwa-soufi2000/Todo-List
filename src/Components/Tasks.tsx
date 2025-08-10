@@ -24,6 +24,9 @@ export default function Tasks(props : taskType)
 {
     const[open , setOpen] = useState<boolean>(false)
     const obj = useRef<taskType>({} as taskType)
+    const opration = useRef<string>('')
+
+
     console.log(obj.current)
 
     const{ tasks , setTask } = useContext(Completed)
@@ -35,7 +38,7 @@ export default function Tasks(props : taskType)
        console.log(updateTodos)
     }
     
-    const handleModal = (id : number) => 
+    const handleModal = (id : number , oper : string) => 
     {
       updateTodos.forEach(element => {
              if(element.idTask === id)
@@ -43,6 +46,8 @@ export default function Tasks(props : taskType)
                 obj.current = element
              }
         });
+
+        opration.current = oper;
         console.log(obj.current)
         setOpen(true)
     }
@@ -69,15 +74,16 @@ export default function Tasks(props : taskType)
                open={open}
                setOpen={setOpen}
                element={obj.current}
+               operation={opration.current}
             />
             </Todos>
         }
         <Container className='taskContainer'>
             <Stack className='stack' direction='row' style={{display:'flex', gap:'10px'}}>
-              <IconButton id={`edit${props.idTask}`}>
+              <IconButton id={`edit${props.idTask}`} onClick={() =>  handleModal(props.idTask , 'update')}>
                 <EditIcon id='edit' className='icon'/>
               </IconButton> 
-              <IconButton id={`delete${props.idTask}`} onClick={() => handleModal(props.idTask)}>
+              <IconButton id={`delete${props.idTask}`} onClick={() => handleModal(props.idTask , 'delete')}>
                   <DeleteIcon id='delete' className='icon'/>
               </IconButton> 
               <IconButton id={`check${props.idTask}`} onClick={() => handleChange(props.idTask)}>

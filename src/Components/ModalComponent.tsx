@@ -5,24 +5,31 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import '../Components/Style.css'
 import { Completed } from './Todos';
+import { Stack, TextField, Typography } from '@mui/material';
 
 type taskType = {
     idTask : number,
     addressTask : string,
-    isCompleted: boolean
+    isCompleted: boolean,
  }
 
 type ModalProps = {
     open : boolean ,
     setOpen : React.Dispatch<React.SetStateAction<boolean>>,
     element : taskType,
+    operation : string
 }
 export default function ModalComponent(props : ModalProps)
 {
 
   const { tasks , setTask } = React.useContext(Completed)
+  const[changedTask , setChangedTask] = React.useState<string>('')
   const arrTasks = JSON.parse(localStorage.getItem('todos') || '[]')
+ 
 
+  React.useEffect(() =>{
+     setChangedTask(props.element.addressTask)
+  }, [])
 
   const handleClose = () => {
     props.setOpen(false)
@@ -48,16 +55,49 @@ export default function ModalComponent(props : ModalProps)
         window.location.pathname = '/'
      }
 
+  const handleUpdate = (e : React.ChangeEvent<HTMLInputElement>) =>
+  {
+      setChangedTask(e.target.value)
+  }
+
+  const updateTask = (obj : taskType) =>
+  {
+    obj.addressTask = changedTask;
+    arrTasks.forEach((element : taskType) => {
+       if(element.idTask === obj.idTask)
+       {
+         element.addressTask = obj.addressTask;
+       }
+     });
+  }
  // const handleListItemClick = (value: string) => {
     
  // };
 
   return (
     <Dialog open={props.open}>
-      <DialogTitle style={{fontSize:'17px', textAlign:'center', fontWeight:'bold'}}>هل انت متأكد من حذف هذه المهمة ؟</DialogTitle>
+      <DialogTitle style={{fontSize:'17px', textAlign:'center', fontWeight:'bold'}}>
+        { props.operation === 'delete' ?
+       " هل انت متأكد من حذف هذه المهمة ؟"
+        :
+        ' :تعدبل المهمة'
+        }
+      </DialogTitle>
         <ButtonGroup className='buttonContainer'>
-            <Button onClick={() => handleDelete(props.element)} variant="outlined" style={{color:'red',border:'1px solid gray',borderRadius:'5px'}}>حذف</Button>
-            <Button variant="outlined" onClick={handleClose} style={{color:'green',border:'1px solid gray',borderRadius:'5px'}}>تراجع</Button>
+            { props.operation === 'delete' ?
+            <Stack direction='row'>
+               <Button onClick={() => handleDelete(props.element)} variant="outlined" style={{color:'red',border:'1px solid gray',borderRadius:'5px'}}>حذف</Button>
+               <Button variant="outlined" onClick={handleClose} style={{color:'green',border:'1px solid gray',borderRadius:'5px'}}>تراجع</Button>
+            </Stack>
+            :
+            <Stack direction='column'>
+                  <Typography className='text' style={{textAlign: 'start' , fontSize: '20px' , fontWeight:'bold' , color:'black'}}>عنوان المهمة</Typography>
+                  <TextField className='inp' value={changedTask} onChange={handleUpdate} id="outlined-basic" label=" عنوان المهمة" variant="outlined"/>
+                  <Stack>
+                     <Button onClick={() => updateTask(props.element)} variant="outlined" style={{color:'green',border:'1px solid gray',borderRadius:'5px' , width:'100px'}}>تعديل</Button>
+                  </Stack>
+            </Stack>
+            }
         </ButtonGroup>
     </Dialog>
   );
