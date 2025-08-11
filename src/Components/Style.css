@@ -67,10 +67,11 @@
  }
  .inp
  {
-   width:80%;
-   height: 40px;
+   width:95%;
+   border:none;
+   border-bottom: 1px solid #000000;
  }
-
+ 
  @media(max-width: 768px)
  {
    .taskContainer {

@@ -1,5 +1,4 @@
 import Button  from '@mui/material/Button'
-//import ButtonGroup from '@mui/material/ButtonGroup'
 import Card from '@mui/material/Card'
 import CardContent  from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
@@ -22,8 +21,7 @@ export default function Home()
 {
      const[newTask , setNewTask] = useState<tasksType>({} as tasksType)
      const{ tasks , setTask } = useContext(Completed)
-
-     //const [show , setShow] = useState<string>('')
+     const[show , setShow] = useState<string>('')
       
      localStorage.setItem('deleted' , '!done')
      let arrTodos: tasksType[] = tasks;
@@ -60,19 +58,18 @@ export default function Home()
 
      const handleAllTasks = () =>
         {
-          // setShow('All')
+           setShow("All")
         } 
 
-
      const handleCompletedTasks = () =>
-     {
-       //setShow('Completed')
-     }
+       {
+          setShow("Completed")
+       }
 
      const handleUnCompletedTasks = () =>
-     {
-      // setShow('UnCompleted')
-     }
+       {
+          setShow("UnCompleted")
+       }
 
       const showAllTasks = arrTodos.map((item: tasksType) => {
           return( <Tasks 
@@ -81,8 +78,24 @@ export default function Home()
              isCompleted={item.isCompleted}
            />)
        })
-     //const showCompletedTasks = arrTodos.filter(item => item.isCompleted === true)
-     //const showUnCompletedTasks = arrTodos.filter(item => item.isCompleted === false)
+     const CompletedTasks = arrTodos.filter((item : tasksType) => {return( item.isCompleted === true)})
+     const UnCompletedTasks = arrTodos.filter((item : tasksType) =>{ return(item.isCompleted === false)})
+
+     const showCompletedTasks = CompletedTasks.map((item : tasksType) => {
+         return( <Tasks 
+             addressTask={item.addressTask}
+             idTask={item.idTask}
+             isCompleted={item.isCompleted}
+           />)
+     })
+
+     const showUnCompletedTasks = UnCompletedTasks.map((item: tasksType) => {
+         return( <Tasks 
+             addressTask={item.addressTask}
+             idTask={item.idTask}
+             isCompleted={item.isCompleted}
+           />)
+     })
 
     return(
         <>
@@ -97,16 +110,16 @@ export default function Home()
                      </div>
                      <Stack direction='column' style={{display:'flex',flexDirection:'column',gap:'30px' , marginTop:'30px'}}>
                           {
-                            // show === 'All' ?
-                             showAllTasks 
-                             //:
-                             //show === 'Completed' ?
-                            // showCompletedTasks
-                            // :
-                            // show === 'UnCompleted' ?
-                            // showUnCompletedTasks
-                            // :
-                            // ''
+                             show === 'All' || show === '' ?
+                             showAllTasks
+                             :
+                             show === 'Completed' ?
+                             showCompletedTasks
+                             :
+                             show === 'UnCompleted' ?
+                             showUnCompletedTasks
+                             :
+                             ''
                           }
                      </Stack>
                 </CardContent>

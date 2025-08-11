@@ -19,6 +19,8 @@ type ModalProps = {
     element : taskType,
     operation : string
 }
+
+
 export default function ModalComponent(props : ModalProps)
 {
 
@@ -59,23 +61,27 @@ export default function ModalComponent(props : ModalProps)
   {
       setChangedTask(e.target.value)
   }
-
+ 
   const updateTask = (obj : taskType) =>
   {
-    obj.addressTask = changedTask;
     arrTasks.forEach((element : taskType) => {
        if(element.idTask === obj.idTask)
        {
-         element.addressTask = obj.addressTask;
+         element.addressTask = changedTask;
        }
      });
+     localStorage.setItem('todos' , JSON.stringify(arrTasks))
+     window.location.pathname = '/'
   }
  // const handleListItemClick = (value: string) => {
     
  // };
 
   return (
-    <Dialog open={props.open}>
+    <Dialog 
+       open={props.open} 
+       onClose={handleClose}
+    >
       <DialogTitle style={{fontSize:'17px', textAlign:'center', fontWeight:'bold'}}>
         { props.operation === 'delete' ?
        " هل انت متأكد من حذف هذه المهمة ؟"
@@ -83,22 +89,20 @@ export default function ModalComponent(props : ModalProps)
         ' :تعدبل المهمة'
         }
       </DialogTitle>
-        <ButtonGroup className='buttonContainer'>
-            { props.operation === 'delete' ?
-            <Stack direction='row'>
+       { props.operation === 'delete' ?
+        <ButtonGroup className='buttonContainer'>    
                <Button onClick={() => handleDelete(props.element)} variant="outlined" style={{color:'red',border:'1px solid gray',borderRadius:'5px'}}>حذف</Button>
                <Button variant="outlined" onClick={handleClose} style={{color:'green',border:'1px solid gray',borderRadius:'5px'}}>تراجع</Button>
-            </Stack>
-            :
-            <Stack direction='column'>
-                  <Typography className='text' style={{textAlign: 'start' , fontSize: '20px' , fontWeight:'bold' , color:'black'}}>عنوان المهمة</Typography>
-                  <TextField className='inp' value={changedTask} onChange={handleUpdate} id="outlined-basic" label=" عنوان المهمة" variant="outlined"/>
-                  <Stack>
-                     <Button onClick={() => updateTask(props.element)} variant="outlined" style={{color:'green',border:'1px solid gray',borderRadius:'5px' , width:'100px'}}>تعديل</Button>
-                  </Stack>
-            </Stack>
-            }
         </ButtonGroup>
+        :
+        <Stack direction='column' style={{display:'flex', justifyContent:'end', alignItems:'center', padding: '20px'}}>
+            <Typography className='text' style={{textAlign: 'start' , fontSize: '17px' , fontWeight:'bold' , color:'black'}}>عنوان المهمة</Typography>
+            <TextField  className='inp' value={changedTask} onChange={handleUpdate} id="outlined-basic" variant="outlined"/>
+            <Stack>
+               <Button onClick={() => updateTask(props.element)} variant="outlined" style={{color:'green',border:'1px solid gray',borderRadius:'5px' , width:'100px'}}>تعديل</Button>
+            </Stack>
+        </Stack>
+       }
     </Dialog>
   );
 }
