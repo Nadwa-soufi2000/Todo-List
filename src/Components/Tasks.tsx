@@ -79,7 +79,7 @@ export default function Tasks(props : taskType)
             </Todos>
         }
         <Container className='taskContainer'>
-            <Stack className='stack' direction='row' style={{display:'flex', gap:'10px'}}>
+            <Stack className='stack' direction='row' style={{display:'flex'}}>
               <IconButton id={`edit${props.idTask}`} onClick={() =>  handleModal(props.idTask , 'update')}>
                 <EditIcon id='edit' className='icon'/>
               </IconButton> 
@@ -91,7 +91,7 @@ export default function Tasks(props : taskType)
               </IconButton>
               <div id='t'></div>
             </Stack>
-            <Typography style={{color:'white', fontSize:'27px'}}>{props.addressTask}</Typography>
+            <Typography className='todoAddress' style={{color:'white', fontSize:'20px'}}>{props.addressTask}</Typography>
         </Container>
         </>
     )
